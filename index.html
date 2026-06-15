@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BD Sports Now - Premium Live Streaming</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-dark: #0b0f19;
+            --card-bg: #151f32;
+            --accent-blue: #38bdf8;
+            --accent-purple: #6366f1;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* Premium Header */
+        .header {
+            background: linear-gradient(135deg, #1e1b4b, #0f172a);
+            border-bottom: 2px solid rgba(56, 189, 248, 0.2);
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .header h1 {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* Live Badge with Modern Animation */
+        .live-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .live-badge {
+            background: #ef4444;
+            padding: 5px 14px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: .7; transform: scale(0.98); }
+        }
+
+        .match-title {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        /* Video Player Frame */
+        .player-wrapper {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #000;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 25px rgba(56, 189, 248, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        video {
+            width: 100%;
+            aspect-ratio: 16/9;
+            display: block;
+        }
+
+        /* Interaction Row */
+        .player-controls-fallback {
+            background: #111827;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom-left-radius: 16px;
+            border-bottom-right-radius: 16px;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .btn-reload {
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent-blue);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-reload:hover {
+            background: var(--accent-blue);
+            color: #000;
+        }
+
+        /* Info Grid Layout */
+        .info-grid {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+        }
+
+        .card h3 {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 20px;
+            color: var(--accent-blue);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card p {
+            font-size: 15px;
+            color: #cbd5e1;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+
+        .footer {
+            margin-top: 60px;
+            text-align: center;
+            padding: 25px;
+            color: var(--text-muted);
+            font-size: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Responsive Tweaks */
+        @media(max-width: 768px) {
+            .match-title { font-size: 28px; }
+            .header h1 { font-size: 26px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1><i class="fa-solid fa-satellite-dish"></i> BD SPORTS NOW LIVE CENTER</h1>
+    </div>
+
+    <div class="container">
+        
+        <div class="live-status">
+            <span class="live-badge">🔴 LIVE</span>
+            <span style="color: var(--text-muted); font-size: 14px;">HD Stream Authorized</span>
+        </div>
+
+        <div class="match-title">Brazil vs Argentina</div>
+
+        <div class="player-wrapper">
+            <video id="video" controls autoplay poster="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=1200&auto=format&fit=crop"></video>
+        </div>
+        <div class="player-controls-fallback">
+            <span><i class="fa-solid fa-circle-info"></i> ভিডিও লোড না হলে পেজটি রিফ্রেশ দিন।</span>
+            <button class="btn-reload" onclick="location.reload();"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
+        </div>
+
+        <div class="info-grid">
+            <div class="card">
+                <h3><i class="fa-solid fa-trophy"></i> Match Info</h3>
+                <p><strong>Competition:</strong> FIFA World Cup Qualifiers</p>
+                <p><strong>Venue:</strong> Maracana Stadium</p>
+                <p><strong>Quality:</strong> 1080p Auto (Adaptive)</p>
+            </div>
+
+            <div class="card">
+                <h3><i class="fa-solid fa-square-poll-horizontal"></i> Live Score</h3>
+                <p style="font-size: 24px; font-weight: 700; font-family: 'Rajdhani', sans-serif; letter-spacing: 1px; margin-top: 5px;">
+                    BRA <span style="color:var(--accent-blue)">0 - 0</span> ARG
+                </p>
+                <p style="color: var(--text-muted); font-size: 13px; margin-top: 10px;"><i class="fa-regular fa-clock"></i> First Half Underway</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>© 2026 BD Sports Now. Built for seamless streaming.</p>
+        </div>
+    </div>
+
+    <script>
+        const video = document.getElementById("video");
+        
+        // আপনার .m3u8 বা লাইভ স্ট্রিম লিংকটি নিচে " " এর ভেতর বসান
+        const videoSrc = "YOUR_M3U8_URL"; 
+
+        if (Hls.isSupported()) {
+            const hls = new Hls({
+                maxMaxBufferLength: 10 // লোডিং ও ল্যাগ কমানোর জন্য ক্যাশ অপ্টিমাইজেশন
+            });
+            hls.loadSource(videoSrc);
+            hls.attachMedia(video);
+            hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                video.play().catch(function(e) {
+                    console.log("Autoplay blocked, waiting for user interaction");
+                });
+            });
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            // Safari বা iOS ডিভাইসের জন্য সরাসরি সোর্স অ্যাসাইন
+            video.src = videoSrc;
+        }
+    </script>
+</body>
+</html>
