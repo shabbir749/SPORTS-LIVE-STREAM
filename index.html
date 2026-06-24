@@ -57,40 +57,43 @@
     </div>
 
     <script>
-        const video = document.getElementById("video");
-        let hls = null;
+    const video = document.getElementById("video");
+    let hls = null;
 
-        // প্রথম সার্ভারের ডিফল্ট লিংক এখানে দিন
-        const defaultStream = "https://sm-monirul.top/tof/live/gervsivo/index.m3u8"; 
+    // প্রথম সার্ভারের ডিফল্ট লিংক এখানে দিন
+    const defaultStream = "https://sm-monirul.top/tof/live/gervsivo/index.m3u8"; 
 
-        function loadStream(url) {
-            if (Hls.isSupported()) {
-                if (hls) { hls.destroy(); } // আগের সোর্স ডিলেট করা
-                hls = new Hls({ maxMaxBufferLength: 10 });
-                hls.loadSource(url);
-                hls.attachMedia(video);
-                hls.on(Hls.Events.MANIFEST_PARSED, function() {
-                    video.play().catch(e => console.log("Autoplay blocked"));
-                });
-            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                video.src = url;
-            }
+    function loadStream(url) {
+        if (Hls.isSupported()) {
+            if (hls) { hls.destroy(); }
+            hls = new Hls({ maxMaxBufferLength: 10 });
+            hls.loadSource(url);
+            hls.attachMedia(video);
+            hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                // অটোমেটিক প্লে করার সর্বোচ্চ চেষ্টা
+                let playPromise = video.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => {
+                        console.log("Autoplay blocked, muting to force play...");
+                        video.muted = true; // ব্লক করলে মিউট করে প্লে করানো হবে
+                        video.play();
+                    });
+                }
+            });
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            video.src = url;
         }
+    }
 
-        // সার্ভার পরিবর্তন করার ফাংশন
-        function switchServer(url, button) {
-            // সব বাটন থেকে active ক্লাস রিমুভ করা
-            document.querySelectorAll('.server-btn').forEach(btn => btn.classList.remove('active'));
-            // ক্লিক করা বাটনে active ক্লাস যোগ করা
-            button.classList.add('active');
-            // নতুন স্ট্রিম লোড করা
-            loadStream(url);
-        }
+    function switchServer(url, button) {
+        document.querySelectorAll('.server-btn').forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        loadStream(url);
+    }
 
-        // পেজ লোড হওয়ার সাথে সাথে ডিফল্ট স্ট্রিম চালু হবে
-        window.onload = function() {
-            loadStream(defaultStream);
-        };
-    </script>
+    window.onload = function() {
+        loadStream(defaultStream);
+    };
+</script>
 </body>
                 </html>
