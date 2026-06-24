@@ -1,94 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://conscientiouscabbageadrift.com/6c/4d/20/6c4d201c91155fbe30f2e90db6b805fe.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SHAOR - Premium Live Streaming</title>
+    <title>Live Streaming Center</title>
     
+    <!-- hls.js for M3U8 streaming -->
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Fonts & FontAwesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- External CSS link -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="header">
-        <h1><i class="fa-solid fa-satellite-dish"></i>SHAOR TV LIVE CENTER</h1>
-    </div>
-
     <div class="container">
         
-        <div class="live-status">
-            <span class="live-badge">🔴 LIVE</span>
-            <span style="color: var(--text-muted); font-size: 14px;">HD Stream Authorized</span>
+        <!-- Top Status & Social Buttons (As seen in Screenshot) -->
+        <div class="top-bar">
+            <div class="status-badges">
+                <span class="badge-live">🔴 LIVE</span>
+                <span class="badge-watching"><i class="fa-solid fa-eye"></i> 2.4K</span>
+            </div>
+            
+            <div class="social-buttons">
+                <!-- আপনার ফেসবুক লিংক বসান -->
+                <a href="https://facebook.com/shabbiraornov" target="_blank" class="btn-social btn-fb">
+                    <i class="fa-brands fa-facebook"></i> Follow on Facebook
+                </a>
+                <!-- আপনার টেলিগ্রাম লিংক বসান -->
+                <a href="https://t.me/fifa_world_cup_2026_live" target="_blank" class="btn-social btn-tg">
+                    <i class="fa-brands fa-telegram"></i> Follow on Telegram
+                </a>
+            </div>
         </div>
 
-        <script id="_wauqwk">var _wau = _wau || []; _wau.push(["small", "4eavk4jnhx", "qwk"]);</script><script async src="//waust.at/s.js"></script>
-
-        <div class="match-title"> Argentina vs Algeria</div>
-
+        <!-- Video Player Frame -->
         <div class="player-wrapper">
             <video id="video" controls autoplay poster="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=1200&auto=format&fit=crop"></video>
         </div>
-        <div class="player-controls-fallback">
-            <span><i class="fa-solid fa-circle-info"></i> IF THIS LIVE NOT WORKING. PLEASE REFRESH THE PAGE</span>
-            <button class="btn-reload" onclick="location.reload();"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
-        </div>
-        
-<div class="telegram-card">
-    <div class="telegram-text">
-        <h3><i class="fa-brands fa-telegram" style="color: #0088cc; font-size: 28px;"></i> JOIN Us!</h3>
-        <p>Match Update,Match Schedule,Match Result etc.</p>
-    </div>
-    <a href="https://t.me/ShaorTV" target="_blank" class="btn-telegram">
-        <i class="fa-solid fa-paper-plane"></i> Join Telegram Channel
-    </a>
-</div>
-        <div class="info-grid">
-            <div class="card">
-                <h3><i class="fa-solid fa-trophy"></i> Match Info</h3>
-                <p><strong>Competition:</strong> FIFA World Cup R1</p>
-                <p><strong>Venue:</strong> Kansas City Stadium</p>
-                <p><strong>Quality:</strong> 4k Auto (Adaptive)</p>
-            </div>
 
-            <div class="card">
-                <h3><i class="fa-solid fa-square-poll-horizontal"></i> Live Score</h3>
-                <p style="font-size: 24px; font-weight: 700; font-family: 'Rajdhani', sans-serif; letter-spacing: 1px; margin-top: 5px;">
-                    ARG <span style="color:var(--accent-blue)">1 - 0</span> ALG
-                </p>
-                <p style="color: var(--text-muted); font-size: 13px; margin-top: 10px;"><i class="fa-regular fa-clock"></i> First Half</p>
+        <!-- Server Switcher (As seen in Screenshot) -->
+        <div class="server-container">
+            <div class="server-list">
+                <button class="server-btn active" onclick="switchServer('https://sm-monirul.top/tof/live/gervsivo/index.m3u8', this)">Server 1 <span class="hd-tag">HD</span></button>
+                <button class="server-btn" onclick="switchServer('YOUR_M3U8_URL_2', this)">Server 2 <span class="hd-tag">HD</span></button>
+                <button class="server-btn" onclick="switchServer('YOUR_M3U8_URL_3', this)">Server 3 <span class="hd-tag">HD</span></button>
+                <button class="server-btn" onclick="switchServer('YOUR_M3U8_URL_4', this)">Server 4 <span class="hd-tag">HD</span></button>
             </div>
         </div>
 
-        <div class="footer">
-            <p>© 2026 SHAOR. Built for seamless streaming.</p>
-        </div>
     </div>
 
     <script>
         const video = document.getElementById("video");
-        
-        // আপনার .m3u8 বা লাইভ স্ট্রিম লিংকটি নিচে " " এর ভেতর বসান
-        const videoSrc = "https://sm-monirul.top/tof/live/gervsivo/index.m3u8"; 
+        let hls = null;
 
-        if (Hls.isSupported()) {
-            const hls = new Hls({
-                maxMaxBufferLength: 10 // লোডিং ও ল্যাগ কমানোর জন্য ক্যাশ অপ্টিমাইজেশন
-            });
-            hls.loadSource(videoSrc);
-            hls.attachMedia(video);
-            hls.on(Hls.Events.MANIFEST_PARSED, function() {
-                video.play().catch(function(e) {
-                    console.log("Autoplay blocked, waiting for user interaction");
+        // প্রথম সার্ভারের ডিফল্ট লিংক এখানে দিন
+        const defaultStream = "https://sm-monirul.top/tof/live/gervsivo/index.m3u8"; 
+
+        function loadStream(url) {
+            if (Hls.isSupported()) {
+                if (hls) { hls.destroy(); } // আগের সোর্স ডিলেট করা
+                hls = new Hls({ maxMaxBufferLength: 10 });
+                hls.loadSource(url);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                    video.play().catch(e => console.log("Autoplay blocked"));
                 });
-            });
-        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-            // Safari বা iOS ডিভাইসের জন্য সরাসরি সোর্স অ্যাসাইন
-            video.src = videoSrc;
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = url;
+            }
         }
+
+        // সার্ভার পরিবর্তন করার ফাংশন
+        function switchServer(url, button) {
+            // সব বাটন থেকে active ক্লাস রিমুভ করা
+            document.querySelectorAll('.server-btn').forEach(btn => btn.classList.remove('active'));
+            // ক্লিক করা বাটনে active ক্লাস যোগ করা
+            button.classList.add('active');
+            // নতুন স্ট্রিম লোড করা
+            loadStream(url);
+        }
+
+        // পেজ লোড হওয়ার সাথে সাথে ডিফল্ট স্ট্রিম চালু হবে
+        window.onload = function() {
+            loadStream(defaultStream);
+        };
     </script>
 </body>
-</html>
+                </html>
