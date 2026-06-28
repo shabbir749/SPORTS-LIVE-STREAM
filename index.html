@@ -95,5 +95,57 @@
         loadStream(defaultStream);
     };
 </script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+<script>
+    // আপনার প্রজেক্টের সঠিক কনফিগারেশন (v8 ফরম্যাটে সাজানো)
+    const firebaseConfig = {
+        apiKey: "AIzaSyCBmtFfie1mWxJEDSvr8pykRWX6V8M2eNI",
+        authDomain: "shaor-sports-live-stream.firebaseapp.com",
+        // আপনার প্রোজেক্ট আইডি অনুযায়ী ডাটাবেজ ইউআরএল যোগ করা হয়েছে
+        databaseURL: "https://shaor-sports-live-stream-default-rtdb.firebaseio.com", 
+        projectId: "shaor-sports-live-stream",
+        storageBucket: "shaor-sports-live-stream.firebasestorage.app",
+        messagingSenderId: "473227127790",
+        appId: "1:473227127790:web:236c005cabbaee55047cff"
+    };
+
+    // Firebase ইনিশিয়ালাইজ করা
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    // প্রতি ভিজিটরের জন্য ইউনিক আইডি জেনারেট করা
+    const myConnectionRef = database.ref('live_users/' + Math.random().toString(36).substring(7));
+    const connectedRef = database.ref('.info/connected');
+    const totalWatchingRef = database.ref('total_live_watching');
+
+    // লাইভ ইউজার কাউন্ট লজিক
+    connectedRef.on('value', (snap) => {
+        if (snap.val() === true) {
+            // ইউজার লাইভ আসলে ডাটাবেজে ১ যোগ হবে
+            myConnectionRef.set(true);
+            totalWatchingRef.transaction((currentCount) => (currentCount || 0) + 1);
+
+            // ইউজার পেজ বা মিনি অ্যাপ বন্ধ করলে স্বয়ংক্রিয়ভাবে মাইনাস হবে
+            myConnectionRef.onDisconnect().remove();
+            totalWatchingRef.onDisconnect().transaction((currentCount) => (currentCount ? currentCount - 1 : 0));
+        }
+    });
+
+    // ডাটাবেজের লাইভ সংখ্যাটি স্ক্রিনে দেখানোর জন্য
+    totalWatchingRef.on('value', (snapshot) => {
+        const count = snapshot.val() || 1;
+        const counterElement = document.querySelector('.badge-watching');
+        if (counterElement) {
+            counterElement.innerHTML = `<i class="fa-solid fa-eye"></i> ${formatCount(count)}`;
+        }
+    });
+
+    // ১০০০ পার হলে 1K, 2.4K দেখানোর ফাংশন
+    function formatCount(num) {
+        return num >= 1000 ? (num / 1000).toFixed(1) + 'K' : num;
+    }
+</script>
 </body>
                 </html>
