@@ -36,12 +36,26 @@ body {
 
 .badge-live {
     background: #111;
+.badge-live {
+    background: #111;
     border: 1px solid #ff000044;
     padding: 6px 16px;
     border-radius: 20px;
     font-size: 13px;
     font-weight: 700;
     color: #ff4444;
+    /* 🔽 এই লাইনটি ব্লিংক করানোর জন্য যোগ করা হয়েছে 🔽 */
+    animation: liveBlink 1.5s infinite ease-in-out;
+}
+
+/* 🔽 ব্লিংক অ্যানিমেশনের আসল লজিক 🔽 */
+@keyframes liveBlink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.3; /* মাঝের সময়ে ঝাপসা হয়ে যাবে */
+    }
 }
 
 .badge-watching {
