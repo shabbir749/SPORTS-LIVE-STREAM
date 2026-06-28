@@ -104,15 +104,15 @@
         loadStream(defaultStream);
     };
 </script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <!-- Firebase core JavaScript SDKs -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
 <script>
-    // আপনার প্রজেক্টের সঠিক কনফিগারেশন (v8 ফরম্যাটে সাজানো)
+    // আপনার প্রজেক্টের সঠিক কনফিগারেশন
     const firebaseConfig = {
         apiKey: "AIzaSyCBmtFfie1mWxJEDSvr8pykRWX6V8M2eNI",
         authDomain: "shaor-sports-live-stream.firebaseapp.com",
-        // আপনার প্রোজেক্ট আইডি অনুযায়ী ডাটাবেজ ইউআরএল যোগ করা হয়েছে
         databaseURL: "https://shaor-sports-live-stream-default-rtdb.firebaseio.com", 
         projectId: "shaor-sports-live-stream",
         storageBucket: "shaor-sports-live-stream.firebasestorage.app",
@@ -124,27 +124,31 @@
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
 
-    // প্রতি ভিজিটরের জন্য ইউনিক আইডি জেনারেট করা
-    const myConnectionRef = database.ref('live_users/' + Math.random().toString(36).substring(7));
+    // প্রতি ইউজারের ব্রাউজার সেশনের জন্য একটি ইউনিক আইডি (টেলিগ্রাম রিফ্রেশ ট্র্যাক করার জন্য এটি সেশন স্টোরেজে থাকবে)
+    if (!sessionStorage.getItem('chat_user_id')) {
+        sessionStorage.setItem('chat_user_id', Math.random().toString(36).substring(7));
+    }
+    const userId = sessionStorage.getItem('chat_user_id');
+    
+    const myConnectionRef = database.ref('live_users/' + userId);
     const connectedRef = database.ref('.info/connected');
     const totalWatchingRef = database.ref('total_live_watching');
 
-    // লাইভ ইউজার কাউন্ট লজিক
+    // লাইভ ইউজার কাউন্ট লজিক (নিখুঁত রিয়েল-টাইম সিঙ্ক)
     connectedRef.on('value', (snap) => {
         if (snap.val() === true) {
-            // ইউজার লাইভ আসলে ডাটাবেজে ১ যোগ হবে
+            // ইউজার লাইভ থাকলে ডাটাবেজে তার ইউনিক আইডি সেট হবে
             myConnectionRef.set(true);
-            totalWatchingRef.transaction((currentCount) => (currentCount || 0) + 1);
 
-            // ইউজার পেজ বা মিনি অ্যাপ বন্ধ করলে স্বয়ংক্রিয়ভাবে মাইনাস হবে
+            // ইউজার পেজ থেকে বের হয়ে গেলে বা মিনি অ্যাপ কেটে দিলে ডাটাবেজ থেকে আইডি মুছে যাবে
             myConnectionRef.onDisconnect().remove();
-            totalWatchingRef.onDisconnect().transaction((currentCount) => (currentCount ? currentCount - 1 : 0));
         }
     });
 
-    // ডাটাবেজের লাইভ সংখ্যাটি স্ক্রিনে দেখানোর জন্য
-    totalWatchingRef.on('value', (snapshot) => {
-        const count = snapshot.val() || 1;
+    // ডাটাবেজে মোট কয়টি ইউনিক আইডি সক্রিয় আছে তা গুনে লাইভ কাউন্ট আপডেট করা
+    database.ref('live_users').on('value', (snapshot) => {
+        const count = snapshot.numChildren() || 1; // যতগুলো আইডি লাইভ আছে, ঠিক তত সংখ্যা দেখাবে
+        
         const counterElement = document.querySelector('.badge-watching');
         if (counterElement) {
             counterElement.innerHTML = `<i class="fa-solid fa-eye"></i> ${formatCount(count)}`;
