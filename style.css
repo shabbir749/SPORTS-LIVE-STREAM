@@ -1,164 +1,156 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
-}
-
-body {
-    background-color: #05070c; /* স্ক্রিনশটের মতো ডিপ ডার্ক ব্যাকগ্রাউন্ড */
-    color: #fff;
-    padding: 20px 0;
-}
-
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 10px;
-}
-
-/* Top Bar Styling */
-.top-bar {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-bottom: 20px;
-    background: rgba(255, 255, 255, 0.02);
-    padding: 15px;
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.status-badges {
-    display: flex;
-    gap: 10px;
-}
-
-.badge-live {
-    background: #111;
-.badge-live {
-    background: #111;
-    border: 1px solid #ff000044;
-    padding: 6px 16px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 700;
-    color: #ff4444;
-    /* 🔽 এই লাইনটি ব্লিংক করানোর জন্য যোগ করা হয়েছে 🔽 */
-    animation: liveBlink 1.5s infinite ease-in-out;
-}
-
-/* 🔽 ব্লিংক অ্যানিমেশনের আসল লজিক 🔽 */
-@keyframes liveBlink {
-    0%, 100% {
-        opacity: 1;
+  * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Inter', sans-serif;
     }
-    50% {
-        opacity: 0.3; /* মাঝের সময়ে ঝাপসা হয়ে যাবে */
-}
 
-.badge-watching {
-    background: #111;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 6px 16px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 600;
-    color: #ff4444; /* স্ক্রিনশটের কালার কোড */
-}
+    body {
+        background-color: #05070c;
+        color: #fff;
+        padding: 20px 0;
+    }
 
-.social-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    max-width: 250px;
-}
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 10px;
+    }
 
-.btn-social {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 16px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    text-decoration: none;
-    color: #93c5fd;
-    background: rgba(30, 41, 59, 0.5);
-    border: 1px solid rgba(147, 197, 253, 0.2);
-    transition: 0.3s;
-}
-
-.btn-social:hover {
-    background: rgba(147, 197, 253, 0.2);
-}
-
-/* Video Player Styling */
-.player-wrapper {
-    position: relative;
-    border-radius: 12px;
-    overflow: hidden;
-    background: #000;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.7);
-    margin-bottom: 20px;
-}
-
-video {
-    width: 100%;
-    aspect-ratio: 16/9;
-    display: block;
-}
-
-/* Server Switcher Styling */
-.server-container {
-    background: #11141d;
-    padding: 12px;
-    border-radius: 30px;
-    overflow-x: auto;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.server-list {
-    display: flex;
-    gap: 12px;
-    white-space: nowrap;
-}
-
-.server-btn {
-    background: transparent;
-    color: #94a3b8;
-    border: none;
-    padding: 8px 18px;
-    border-radius: 20px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    transition: 0.3s ease;
-}
-
-.server-btn.active {
-    background: #ef4444; /* স্ক্রিনশটের মতো লাল সিলেকশন বাটন */
-    color: #fff;
-    box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
-}
-
-.hd-tag {
-    font-size: 9px;
-    background: #06b6d4;
-    color: #fff;
-    padding: 1px 4px;
-    border-radius: 4px;
-    font-weight: 700;
-}
-
-/* Mobile Responsive */
-@media(min-width: 500px) {
+    /* Top Bar Styling */
     .top-bar {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-bottom: 20px;
+        background: rgba(255, 255, 255, 0.02);
+        padding: 15px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
     }
+
+    .status-badges {
+        display: flex;
+        gap: 10px;
+    }
+
+    .badge-live {
+        background: #111;
+        border: 1px solid #ff000044;
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 700;
+        color: #ff4444;
+        animation: liveBlink 1.5s infinite ease-in-out;
+    }
+
+    @keyframes liveBlink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.3; }
+    }
+
+    .badge-watching {
+        background: #111;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #ff4444;
+    }
+
+    .social-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        max-width: 250px;
+    }
+
+    .btn-social {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 16px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        color: #93c5fd;
+        background: rgba(30, 41, 59, 0.5);
+        border: 1px solid rgba(147, 197, 253, 0.2);
+        transition: 0.3s;
+    }
+
+    .btn-social:hover {
+        background: rgba(147, 197, 253, 0.2);
+    }
+
+    /* Video Player Styling */
+    .player-wrapper {
+        position: relative;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #000;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+        margin-bottom: 20px;
+    }
+
+    video {
+        width: 100%;
+        aspect-ratio: 16/9;
+        display: block;
+    }
+
+    /* Server Switcher Styling */
+    .server-container {
+        background: #11141d;
+        padding: 12px;
+        border-radius: 30px;
+        overflow-x: auto;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .server-list {
+        display: flex;
+        gap: 12px;
+        white-space: nowrap;
+    }
+
+    .server-btn {
+        background: transparent;
+        color: #94a3b8;
+        border: none;
+        padding: 8px 18px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: 0.3s ease;
+    }
+
+    .server-btn.active {
+        background: #ef4444;
+        color: #fff;
+        box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+    }
+
+    .hd-tag {
+        font-size: 9px;
+        background: #06b6d4;
+        color: #fff;
+        padding: 1px 4px;
+        border-radius: 4px;
+        font-weight: 700;
+    }
+
+    @media(min-width: 500px) {
+        .top-bar {
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
     }
