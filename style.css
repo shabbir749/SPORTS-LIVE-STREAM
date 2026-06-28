@@ -56,7 +56,6 @@ body {
     50% {
         opacity: 0.3; /* মাঝের সময়ে ঝাপসা হয়ে যাবে */
     }
-}
 
 .badge-watching {
     background: #111;
